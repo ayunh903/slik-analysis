@@ -337,8 +337,11 @@ def proses_files_debitur(files):
             # Simpan hasil per file
             filename = os.path.basename(original_name or path)
             nik = os.path.splitext(filename)[0]
-            if nik.upper().startswith("NIK_"):
-                nik = nik[4:]
+
+            # Update baca nama file NIK
+            for prefix in ["NIK_", "KTP_", "Paspor_"]:
+                if nik.upper().startswith(prefix.upper()):
+                    nik = nik[len(prefix):]
 
             hasil_semua.append({
                 "NIK": nik,
@@ -371,9 +374,14 @@ def proses_files_debitur(files):
     grouped = defaultdict(list)
     for row in hasil_semua:
         nik_raw = str(row["NIK"]).strip()
-        if nik_raw.upper().startswith("NIK_"):
-            nik_raw = nik_raw[4:]
+
+        # Update baca nama file NIK
+        for prefix in ["NIK_", "KTP_", "Paspor_"]:
+            if nik_raw.upper().startswith(prefix.upper()):
+                nik_raw = nik_raw[len(prefix):]
+
         nik_key = nik_raw.split("-")[0]
+
         grouped[nik_key].append(row)
 
     def gabung_kolom(key, is_numerik=False):
@@ -710,8 +718,11 @@ def proses_files_karyawan(files):
             print(f"Finished processing file: {original_name}")
             filename = os.path.basename(original_name or path)
             nik = os.path.splitext(filename)[0]
-            if nik.upper().startswith("NIK_"):
-                nik = nik[4:]
+
+            # Update baca nama file NIK
+            for prefix in ["NIK_", "KTP_", "Paspor_"]:
+                if nik.upper().startswith(prefix):
+                    nik = nik[len(prefix):]
 
             hasil_semua.append({
                 'NIK': nik,
@@ -732,12 +743,12 @@ def proses_files_karyawan(files):
         grouped = defaultdict(list)
         for row in hasil_semua:
             nik_raw = str(row["NIK"]).strip()
-
-            # Buang prefix "NIK_" jika ada
-            if nik_raw.upper().startswith("NIK_"):
-                nik_raw = nik_raw[4:]
-
-            # Buang suffix setelah tanda "-" (kalau ada)
+    
+            # Update baca nama file NIK
+            for prefix in ["NIK_", "KTP_", "Paspor_"]:
+                if nik_raw.upper().startswith(prefix.upper()):
+                    nik_raw = nik_raw[len(prefix):]
+    
             nik_key = nik_raw.split("-")[0]
 
             grouped[nik_key].append(row)
