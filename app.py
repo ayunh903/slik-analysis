@@ -721,7 +721,7 @@ def proses_files_karyawan(files):
 
             # Update baca nama file NIK
             for prefix in ["NIK_", "KTP_", "Paspor_"]:
-                if nik.upper().startswith(prefix):
+                if nik.upper().startswith(prefix.upper()):
                     nik = nik[len(prefix):]
 
             hasil_semua.append({
